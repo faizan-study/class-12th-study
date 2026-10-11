@@ -1,1 +1,229 @@
+<!DOCTYPE html>
+<html lang="hi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#081426">
+<title>CLASS 12TH STUDY</title>
+<style>
+:root{--bg:#071323;--panel:#10233c;--panel2:#0b1b30;--gold:#f2c767;--text:#f5f7fb;--muted:#b8c5d8;--line:#2a405e;--red:#ff9e9e;--green:#9be7b0}
+*{box-sizing:border-box}body{margin:0;background:radial-gradient(ellipse at top,#132b4b 0,#071323 52%);color:var(--text);font:16px/1.5 system-ui,-apple-system,Segoe UI,Arial,sans-serif}
+header{padding:22px 16px;border-bottom:1px solid var(--line);background:#081426eF;position:sticky;top:0;z-index:5;backdrop-filter:blur(12px)}
+.head{max-width:1100px;margin:auto;display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap}.brand{font-weight:900;letter-spacing:.4px;font-size:clamp(20px,4vw,29px);color:var(--gold)}.tag{font-size:12px;color:var(--muted)}main{max-width:1100px;margin:auto;padding:20px 14px 48px}
+.hero{padding:24px;border:1px solid #3b5270;border-radius:22px;background:linear-gradient(135deg,#132b49,#0c1a2e 72%);box-shadow:0 16px 50px #0003}.hero h1{font-size:clamp(26px,5vw,42px);line-height:1.12;margin:0 0 12px}.gold{color:var(--gold)}.muted{color:var(--muted)}.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,280px),1fr));gap:14px;margin-top:16px}.card{background:linear-gradient(180deg,#10233c,#0b1a2d);border:1px solid var(--line);border-radius:16px;padding:17px;min-width:0}.card h2,.card h3{margin:0 0 12px}.section{margin-top:22px}.row{display:flex;gap:10px;flex-wrap:wrap;align-items:center}.row>*{flex:1}.row .fit{flex:0 0 auto}button,.btn{border:0;border-radius:10px;background:var(--gold);color:#142033;font-weight:800;padding:11px 14px;cursor:pointer;text-decoration:none;display:inline-block}button.secondary{background:#243b59;color:#fff;border:1px solid #425b7a}button.danger{background:#552b38;color:#fff}button:disabled{opacity:.5;cursor:not-allowed}input,select,textarea{width:100%;padding:11px 12px;border-radius:9px;background:#071323;color:#fff;border:1px solid #405775;margin:5px 0 10px;font:inherit}input[type=file]{padding:8px}label{font-size:13px;color:var(--muted)}.hidden{display:none!important}.status{padding:10px 12px;border-radius:9px;background:#172c45;margin:12px 0;white-space:pre-wrap}.status.error{color:var(--red)}.status.ok{color:var(--green)}.list{display:grid;gap:10px}.item{padding:12px;border:1px solid var(--line);border-radius:11px;background:#09182b}.item a{color:var(--gold);overflow-wrap:anywhere}.item p{margin:5px 0}.pill{display:inline-block;border:1px solid #506581;border-radius:30px;padding:3px 9px;font-size:12px;color:var(--muted)}.q{border:1px solid var(--line);border-radius:12px;padding:14px;margin:10px 0;background:#09182b}.option{display:flex;gap:9px;align-items:flex-start;margin:8px 0;color:var(--text)}.option input{width:auto;margin:5px 0 0}.small{font-size:12px;color:var(--muted)}footer{text-align:center;color:var(--muted);padding:22px 10px;border-top:1px solid var(--line)}.adminOnly{border-color:#8c7134}.dangerNote{color:#ffd18a;font-size:13px}.topActions{display:flex;gap:8px;align-items:center;flex-wrap:wrap}
+@media(max-width:560px){header{position:static}.hero{padding:19px}.head{align-items:flex-start}.topActions{width:100%}.topActions button{flex:1}}
+</style>
+</head>
+<body>
+<header><div class="head"><div><div class="brand">📚 CLASS 12TH STUDY</div><div class="tag">BSEB BIHAR BOARD • Learn · Practice · Improve</div></div><div class="topActions"><span id="userLabel" class="small">Guest</span><button id="logoutBtn" class="secondary hidden" onclick="logout()">Logout</button></div></div></header>
+<main>
+<section class="hero">
+  <div class="pill">CLASS 12 • SCIENCE & MORE</div>
+  <h1>Apni padhai ko banao <span class="gold">strong.</span></h1>
+  <p class="muted">Chapter-wise notes, study materials, objective tests aur written-answer practice — ek jagah.</p>
+  <div class="row"><button onclick="document.getElementById('library').scrollIntoView({behavior:'smooth'})">📖 Study Library</button><button class="secondary" onclick="document.getElementById('testArea').scrollIntoView({behavior:'smooth'})">📝 Practice Test</button></div>
+</section>
+<div id="notice" class="status">Setup ke liye Supabase project ki URL aur anon/publishable key add karein. README.md mein steps hain.</div>
 
+<section id="authSection" class="section grid">
+  <div class="card"><h2>🔐 Student Login</h2><label>Email</label><input id="loginEmail" type="email" autocomplete="email" placeholder="you@example.com"><label>Password</label><input id="loginPassword" type="password" autocomplete="current-password" placeholder="Password"><button onclick="login()">Login</button></div>
+  <div class="card"><h2>✨ Create Account</h2><label>Name</label><input id="signupName" placeholder="Your name"><label>Email</label><input id="signupEmail" type="email" placeholder="you@example.com"><label>Password (minimum 8 characters)</label><input id="signupPassword" type="password" minlength="8" placeholder="Create password"><button onclick="signup()">Sign Up</button><p class="small">Account confirmation email enabled ho to inbox check karein.</p></div>
+</section>
+
+<section id="library" class="section">
+  <h2>📚 Study Library</h2>
+  <div class="card"><div class="row"><div><label>Subject</label><select id="subjectSelect" onchange="loadChapters()"><option value="">Loading subjects…</option></select></div><div><label>Chapter</label><select id="chapterSelect" onchange="loadChapterContent()"><option value="">Choose chapter</option></select></div></div>
+  <div id="chapterInfo" class="muted">Subject aur chapter choose karein. Admin ko pehle materials add karne honge.</div>
+  <h3 class="section">📄 Notes & PDFs</h3><div id="materials" class="list"><div class="item">Materials yahan dikhengi.</div></div></div>
+</section>
+
+<section id="testArea" class="section">
+  <h2>📝 Objective Practice</h2>
+  <div class="card"><p class="muted">Selected chapter ke questions load honge. Submit karne par marks save honge.</p><div id="questions" class="list"><div class="item">Pehle subject aur chapter select karein.</div></div><button id="submitTestBtn" onclick="submitTest()" disabled>Submit Test</button><div id="testResult" class="status hidden"></div></div>
+  <div class="card section"><h3>✍️ Subjective Answer</h3><p class="muted">Chapter select karke apna written answer submit karein. Teacher/admin baad mein review kar sakte hain.</p><label>Question / topic</label><input id="writtenQuestion" placeholder="Question ka naam ya number"><label>Your answer</label><textarea id="writtenAnswer" rows="5" placeholder="Yahan apna answer likhein…"></textarea><button onclick="submitWritten()">Submit Written Answer</button></div>
+</section>
+
+<section id="progressArea" class="section">
+<h2>📈 My Results</h2><div class="card"><button class="secondary" onclick="loadMyResults()">Refresh results</button><div id="myResults" class="list section"><div class="item">Login karke apne saved results dekhein.</div></div></div>
+</section>
+
+<section id="adminPanel" class="section hidden">
+<h2>🛡️ Admin Panel <span class="pill">Admin only</span></h2>
+<div class="card adminOnly"><p class="dangerNote">Admin access database mein role set hone par hi milega. Sirf UI chhupana security nahi hota; database policies actual access control karti hain.</p>
+<h3>1. Add Subject</h3><label>Subject name</label><input id="newSubject" placeholder="Physics"><button onclick="addSubject()">Add Subject</button>
+<hr style="border-color:#2a405e;margin:20px 0">
+<h3>2. Add Chapter</h3><label>Subject</label><select id="adminSubject"></select><label>Chapter number (optional)</label><input id="newChapterNo" type="number" min="1" placeholder="1"><label>Chapter title</label><input id="newChapterTitle" placeholder="Electric Charges and Fields"><button onclick="addChapter()">Add Chapter</button>
+<hr style="border-color:#2a405e;margin:20px 0">
+<h3>3. Upload PDF / Image / Notes</h3><label>Chapter</label><select id="adminChapter"></select><label>Material title</label><input id="materialTitle" placeholder="Chapter 1 Notes"><label>Choose file (PDF, JPG, PNG; max 15 MB)</label><input id="materialFile" type="file" accept=".pdf,.jpg,.jpeg,.png,.webp"><button onclick="uploadMaterial()">Upload Material</button>
+<hr style="border-color:#2a405e;margin:20px 0">
+<h3>4. Add Objective Question</h3><label>Chapter</label><select id="questionChapter"></select><label>Question</label><textarea id="newQuestion" rows="2" placeholder="Question text"></textarea><div class="grid"><div><label>Option A</label><input id="optA"></div><div><label>Option B</label><input id="optB"></div><div><label>Option C</label><input id="optC"></div><div><label>Option D</label><input id="optD"></div></div><label>Correct option</label><select id="correctOption"><option value="0">A</option><option value="1">B</option><option value="2">C</option><option value="3">D</option></select><label>Marks</label><input id="questionMarks" type="number" min="1" value="1"><button onclick="addQuestion()">Save Question</button>
+<hr style="border-color:#2a405e;margin:20px 0">
+<h3>5. Review Written Answers</h3><button class="secondary" onclick="loadWrittenAnswers()">Load student answers</button><div id="writtenReview" class="list section"></div>
+</div></section>
+</main>
+<footer>© 2026 CLASS 12TH STUDY · Student Developer: Md Faizan Raza</footer>
+
+<script type="module">
+import { createClient } from 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/+esm';
+
+/* STEP 1: Replace these two placeholders with your Supabase Project URL and anon/publishable key.
+   Never put your service_role key here. Use only the anon/publishable key with RLS enabled. */
+const SUPABASE_URL = 'PASTE_YOUR_SUPABASE_PROJECT_URL_HERE';
+const SUPABASE_ANON_KEY = 'PASTE_YOUR_SUPABASE_ANON_OR_PUBLISHABLE_KEY_HERE';
+
+let supabase = null, currentUser = null, activeQuestions = [], activeChapter = null;
+const $ = id => document.getElementById(id);
+function message(text, type='') { const el=$('notice'); el.textContent=text; el.className='status '+type; }
+function safe(s=''){return String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));}
+function configReady(){return SUPABASE_URL.startsWith('https://') && !SUPABASE_URL.includes('PASTE_') && !SUPABASE_ANON_KEY.includes('PASTE_') && SUPABASE_ANON_KEY.length>20;}
+if(configReady()){
+  supabase=createClient(SUPABASE_URL,SUPABASE_ANON_KEY);
+  const {data:{session}}=await supabase.auth.getSession();
+  if(session) await setUser(session.user);
+  supabase.auth.onAuthStateChange((_event,session)=>{setTimeout(()=>setUser(session?.user||null),0)});
+  await loadSubjects();
+} else {
+  message('Setup pending: README.md follow karke Supabase URL aur anon/publishable key index.html mein paste karein. Tabhi login/database features kaam karenge.','error');
+  $('subjectSelect').innerHTML='<option>Supabase setup required</option>';
+}
+async function setUser(user){
+ currentUser=user;
+ $('userLabel').textContent=user?user.email:'Guest';
+ $('logoutBtn').classList.toggle('hidden',!user);
+ $('authSection').classList.toggle('hidden',!!user);
+ if(user){await checkAdmin();await loadMyResults();}else{$('adminPanel').classList.add('hidden');}
+}
+async function login(){
+ if(!supabase)return message('Pehle Supabase setup karein.','error');
+ const {error}=await supabase.auth.signInWithPassword({email:$('loginEmail').value.trim(),password:$('loginPassword').value});
+ if(error)message(error.message,'error');else message('Login successful. Welcome!','ok');
+}
+async function signup(){
+ if(!supabase)return message('Pehle Supabase setup karein.','error');
+ const name=$('signupName').value.trim(),email=$('signupEmail').value.trim(),password=$('signupPassword').value;
+ if(!name||!email||password.length<8)return message('Name, valid email aur minimum 8-character password enter karein.','error');
+ const {data,error}=await supabase.auth.signUp({email,password,options:{data:{full_name:name}}});
+ if(error)return message(error.message,'error');
+ message(data.session?'Account created and logged in.':'Account request created. Email confirmation required ho sakta hai; inbox check karein.','ok');
+}
+async function logout(){if(supabase)await supabase.auth.signOut();message('You are logged out.');}
+async function checkAdmin(){
+ if(!currentUser)return;
+ const {data,error}=await supabase.from('profiles').select('role').eq('id',currentUser.id).maybeSingle();
+ const isAdmin=!error&&data?.role==='admin';
+ $('adminPanel').classList.toggle('hidden',!isAdmin);
+ if(isAdmin)await refreshAdminSelectors();
+}
+async function loadSubjects(){
+ if(!supabase)return;
+ const {data,error}=await supabase.from('subjects').select('id,name').order('name');
+ if(error){message('Database tables setup nahi hui. README ke schema.sql ko Supabase SQL Editor mein run karein. Details: '+error.message,'error');return;}
+ $('subjectSelect').innerHTML='<option value="">Choose subject</option>'+(data||[]).map(s=>`<option value="${s.id}">${safe(s.name)}</option>`).join('');
+ await refreshAdminSelectors();
+}
+async function loadChapters(){
+ const sid=$('subjectSelect').value;
+ $('chapterSelect').innerHTML='<option value="">Choose chapter</option>';
+ $('chapterInfo').textContent='Chapter choose karein.';
+ $('materials').innerHTML='';$('questions').innerHTML='<div class="item">Chapter select karein.</div>';$('submitTestBtn').disabled=true;
+ if(!sid)return;
+ const {data,error}=await supabase.from('chapters').select('id,title,chapter_number,description').eq('subject_id',sid).order('chapter_number',{ascending:true,nullsFirst:false});
+ if(error)return message(error.message,'error');
+ $('chapterSelect').innerHTML='<option value="">Choose chapter</option>'+(data||[]).map(c=>`<option value="${c.id}">${c.chapter_number?c.chapter_number+'. ':''}${safe(c.title)}</option>`).join('');
+}
+async function loadChapterContent(){
+ const id=$('chapterSelect').value;activeChapter=id||null;activeQuestions=[];
+ $('materials').innerHTML='';$('questions').innerHTML='';$('submitTestBtn').disabled=true;
+ if(!id)return;
+ const {data:ch}=await supabase.from('chapters').select('title,description').eq('id',id).maybeSingle();
+ $('chapterInfo').innerHTML=ch?`<h3>${safe(ch.title)}</h3><p>${safe(ch.description||'')}</p>`:'';
+ const {data:files,error}=await supabase.from('materials').select('id,title,file_url,file_type,created_at').eq('chapter_id',id).order('created_at',{ascending:false});
+ if(error)message(error.message,'error');
+ $('materials').innerHTML=(files||[]).length?(files||[]).map(f=>`<div class="item"><b>${safe(f.title)}</b><p class="small">${safe(f.file_type||'Study material')}</p><a href="${safe(f.file_url)}" target="_blank" rel="noopener">Open / Download ↗</a></div>`).join(''):'<div class="item muted">Abhi is chapter ke notes upload nahi hue.</div>';
+ const {data:qs,qerror}=await supabase.from('questions').select('id,question_text,options,marks').eq('chapter_id',id).eq('is_published',true).order('created_at');
+ if(qerror)message(qerror.message,'error');
+ activeQuestions=qs||[];
+ $('questions').innerHTML=activeQuestions.length?activeQuestions.map((q,i)=>`<div class="q"><b>${i+1}. ${safe(q.question_text)}</b><div class="small">${q.marks} mark(s)</div>${(q.options||[]).map((op,j)=>`<label class="option"><input type="radio" name="question_${q.id}" value="${j}"><span>${'ABCD'[j]||''}. ${safe(op)}</span></label>`).join('')}</div>`).join(''):'<div class="item muted">Is chapter ke objective questions abhi add nahi hue.</div>';
+ $('submitTestBtn').disabled=!currentUser||!activeQuestions.length;
+}
+async function submitTest(){
+ if(!currentUser)return message('Test submit karne ke liye pehle login karein.','error');
+ if(!activeQuestions.length)return;
+ let score=0,total=0,answers={};
+ for(const q of activeQuestions){total+=Number(q.marks||1);const chosen=document.querySelector(`input[name="question_${q.id}"]:checked`);if(chosen)answers[q.id]=Number(chosen.value);}
+ const {data:graded,error}=await supabase.rpc('submit_test_attempt',{p_chapter_id:activeChapter,p_answers:answers});
+ if(error)return message('Result save nahi hua: '+error.message,'error');
+ score=Number(graded?.score||0);total=Number(graded?.total_marks||0);
+ $('testResult').classList.remove('hidden');$('testResult').textContent=`Result: ${score}/${total} marks`;message('Test submit ho gaya aur result database mein save ho gaya.','ok');await loadMyResults();
+}
+async function submitWritten(){
+ if(!currentUser)return message('Written answer submit karne ke liye login karein.','error');
+ if(!activeChapter)return message('Pehle subject aur chapter select karein.','error');
+ const question=$('writtenQuestion').value.trim(),answer=$('writtenAnswer').value.trim();
+ if(!question||!answer)return message('Question aur answer dono likhein.','error');
+ const {error}=await supabase.from('subjective_answers').insert({user_id:currentUser.id,chapter_id:activeChapter,question_text:question,answer_text:answer});
+ if(error)return message('Answer save nahi hua: '+error.message,'error');
+ $('writtenAnswer').value='';message('Written answer submit ho gaya. Admin review kar sakta hai.','ok');
+}
+async function loadMyResults(){
+ if(!supabase||!currentUser)return;
+ const {data,error}=await supabase.from('test_attempts').select('id,score,total_marks,created_at,chapters(title)').eq('user_id',currentUser.id).order('created_at',{ascending:false}).limit(30);
+ if(error){$('myResults').innerHTML='<div class="item">Results load nahi hue.</div>';return;}
+ $('myResults').innerHTML=(data||[]).length?data.map(r=>`<div class="item"><b>${safe(r.chapters?.title||'Test')}</b><p>Score: ${r.score}/${r.total_marks}</p><span class="small">${new Date(r.created_at).toLocaleString()}</span></div>`).join(''):'<div class="item muted">Abhi koi result nahi hai.</div>';
+}
+async function refreshAdminSelectors(){
+ if(!supabase)return;
+ const {data}=await supabase.from('subjects').select('id,name').order('name');
+ const opts='<option value="">Choose subject</option>'+(data||[]).map(s=>`<option value="${s.id}">${safe(s.name)}</option>`).join('');
+ $('adminSubject').innerHTML=opts;
+ const {data:chs}=await supabase.from('chapters').select('id,title,subject_id,chapter_number').order('chapter_number',{ascending:true,nullsFirst:false});
+ const chOpts='<option value="">Choose chapter</option>'+(chs||[]).map(c=>`<option value="${c.id}">${safe(c.title)}</option>`).join('');
+ $('adminChapter').innerHTML=chOpts;$('questionChapter').innerHTML=chOpts;
+}
+async function addSubject(){
+ if(!currentUser)return;const name=$('newSubject').value.trim();if(!name)return message('Subject name enter karein.','error');
+ const {error}=await supabase.from('subjects').insert({name});if(error)return message(error.message,'error');
+ $('newSubject').value='';message('Subject added.','ok');await loadSubjects();
+}
+async function addChapter(){
+ const subject_id=$('adminSubject').value,title=$('newChapterTitle').value.trim(),n=$('newChapterNo').value;
+ if(!subject_id||!title)return message('Subject aur chapter title required hain.','error');
+ const {error}=await supabase.from('chapters').insert({subject_id,title,chapter_number:n?Number(n):null});
+ if(error)return message(error.message,'error');
+ $('newChapterTitle').value='';$('newChapterNo').value='';message('Chapter added.','ok');await loadChapters();await refreshAdminSelectors();
+}
+async function uploadMaterial(){
+ const chapter_id=$('adminChapter').value,file=$('materialFile').files[0],title=$('materialTitle').value.trim();
+ if(!chapter_id||!file||!title)return message('Chapter, title aur file select karein.','error');
+ if(file.size>15*1024*1024)return message('File 15 MB se chhoti honi chahiye.','error');
+ if(!/\.(pdf|jpe?g|png|webp)$/i.test(file.name))return message('Sirf PDF, JPG, PNG ya WEBP allowed hai.','error');
+ const path=`${currentUser.id}/${crypto.randomUUID()}-${file.name.replace(/[^a-zA-Z0-9._-]/g,'_')}`;
+ const {error:upErr}=await supabase.storage.from('study-files').upload(path,file,{upsert:false});
+ if(upErr)return message('Upload failed: '+upErr.message,'error');
+ const {data}=supabase.storage.from('study-files').getPublicUrl(path);
+ const {error}=await supabase.from('materials').insert({chapter_id,title,file_url:data.publicUrl,file_type:file.type||'document'});
+ if(error)return message('File upload ho gaya, lekin material record save nahi hua: '+error.message,'error');
+ $('materialTitle').value='';$('materialFile').value='';message('Material upload ho gaya.','ok');await loadChapterContent();
+}
+async function addQuestion(){
+ const chapter_id=$('questionChapter').value,question_text=$('newQuestion').value.trim(),options=[$('optA').value.trim(),$('optB').value.trim(),$('optC').value.trim(),$('optD').value.trim()],correct_option=Number($('correctOption').value),marks=Number($('questionMarks').value||1);
+ if(!chapter_id||!question_text||options.some(x=>!x))return message('Chapter, question aur chaaron options required hain.','error');
+ const {data,error}=await supabase.from('questions').insert({chapter_id,question_text,options,marks,is_published:true}).select('id').single();
+ if(error)return message(error.message,'error');
+ const {error:keyErr}=await supabase.from('question_answer_keys').insert({question_id:data.id,correct_option});
+ if(keyErr)return message('Question saved, lekin answer key save nahi hui: '+keyErr.message,'error');
+ $('newQuestion').value='';['optA','optB','optC','optD'].forEach(id=>$(id).value='');message('Question added.','ok');if(activeChapter===chapter_id)await loadChapterContent();
+}
+async function loadWrittenAnswers(){
+ const {data,error}=await supabase.from('subjective_answers').select('id,question_text,answer_text,created_at,profiles(full_name,email),chapters(title)').order('created_at',{ascending:false}).limit(100);
+ if(error)return message(error.message,'error');
+ $('writtenReview').innerHTML=(data||[]).length?data.map(a=>`<div class="item"><b>${safe(a.profiles?.full_name||a.profiles?.email||'Student')}</b><p><span class="small">${safe(a.chapters?.title||'Chapter')} · ${new Date(a.created_at).toLocaleString()}</span></p><p><b>Question:</b> ${safe(a.question_text)}</p><p><b>Answer:</b><br>${safe(a.answer_text).replace(/\n/g,'<br>')}</p><label>Marks (optional)</label><input id="mark_${a.id}" type="number" min="0" placeholder="Marks"><button onclick="gradeAnswer('${a.id}')">Save marks</button><span id="grade_${a.id}" class="small"></span></div>`).join(''):'<div class="item">No answers yet.</div>';
+}
+async function gradeAnswer(id){
+ const value=$('mark_'+id).value;if(value===''||Number(value)<0)return message('Valid marks enter karein.','error');
+ const {error}=await supabase.from('subjective_answers').update({marks_awarded:Number(value),reviewed_at:new Date().toISOString()}).eq('id',id);
+ if(error)return message(error.message,'error');$('grade_'+id).textContent='Saved ✓';message('Marks saved.','ok');
+}
+Object.assign(window,{login,signup,logout,loadChapters,loadChapterContent,submitTest,submitWritten,loadMyResults,addSubject,addChapter,uploadMaterial,addQuestion,loadWrittenAnswers,gradeAnswer});
+</script>
+</body></html>
